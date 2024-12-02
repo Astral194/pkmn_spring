@@ -5,9 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+
+import lombok.*;
 import ru.mirea.Pegov.pkmn.models.*;
 import jakarta.persistence.*;
-import lombok.*;
+
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 import ru.mirea.Pegov.pkmn.converters.EnergyTypeConverter;
@@ -20,7 +22,6 @@ import static org.hibernate.type.SqlTypes.JSON;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter @Getter
 public class CardEntity implements Serializable {
 
     @Serial
@@ -53,10 +54,12 @@ public class CardEntity implements Serializable {
     @Convert(converter = EnergyTypeConverter.class)
     @Column(name="resistance_type", nullable = true)
     private EnergyType resistanceType;
+
     @Column(name="game_set")
     private String gameSet;
     @Column(name="regulation_mark")
     private char regulationMark;
+
     @ManyToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "pokemon_owner_id")
     private StudentEntity pokemonOwner;

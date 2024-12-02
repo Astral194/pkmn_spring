@@ -3,6 +3,7 @@ package ru.mirea.Pegov.pkmn.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import ru.mirea.Pegov.pkmn.models.Student;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,8 +15,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class StudentEntity implements Serializable {
 
     @Serial
@@ -38,6 +37,16 @@ public class StudentEntity implements Serializable {
     @Column
     private String group;
 
+    public static StudentEntity fromStudentToEntity(Student entity) {
+        return StudentEntity.builder()
+                .firstName(entity.getFirstName())
+                .surName(entity.getSurName())
+                .familyName(entity.getFamilyName())
+                .group(entity.getGroup())
+                .build();
+    }
+
+
     @Override
     public String toString() {
         return "Student{" +
@@ -47,4 +56,5 @@ public class StudentEntity implements Serializable {
                 ", group='" + group + '\'' +
                 '}';
     }
+
 }
