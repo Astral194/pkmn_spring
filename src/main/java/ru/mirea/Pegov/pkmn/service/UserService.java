@@ -5,15 +5,15 @@ import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.models.Student;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 public interface UserService {
 
     List<StudentEntity> getStudentsByGroup(String group);
 
-    StudentEntity getStudentByFIO(Student student);
-
-    void saveStudent(Student student);
+    Optional<StudentEntity> getStudentByFIO(StudentEntity student);
 
     List<StudentEntity> findAllStudents();
+
+    StudentEntity save(StudentEntity studentEntity);
 }

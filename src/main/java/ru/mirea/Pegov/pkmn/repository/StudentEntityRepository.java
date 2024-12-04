@@ -10,13 +10,14 @@ import java.util.UUID;
 
 @Repository
 public interface StudentEntityRepository extends JpaRepository<StudentEntity, UUID> {
-    <S extends StudentEntity> S save(S entity);
 
     List<StudentEntity> getStudentByGroup(String group);
 
     Optional<StudentEntity> findByFirstNameAndSurNameAndFamilyNameAndGroup(String firstName, String surName, String familyName, String group);
 
-    void deleteById(UUID  id);
+    StudentEntity findByFirstNameAndSurNameAndFamilyName(String firstName, String surName, String familyName);
 
     List<StudentEntity> findAll();
+
+    boolean existsByFirstNameAndSurNameAndFamilyName(String firstName, String surName, String familyName);
 }

@@ -2,6 +2,7 @@ package ru.mirea.Pegov.pkmn.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.models.Student;
@@ -22,14 +23,14 @@ public class CardDao {
     // Найти карту по UUID
     public CardEntity getCardById(UUID id) {
         return cardRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Card with ID " + id + " not found")
+                () -> new IllegalArgumentException("Card with ID " + id + " not found")
         );
     }
 
     // Найти карту по имени
     public CardEntity getCardByName(String name) {
-        return cardRepository.findByName(name).orElseThrow(
-                () -> new RuntimeException("Card with this name " + name + " not found")
+        return cardRepository.findByName(name).stream().findFirst().orElseThrow(
+                () -> new IllegalArgumentException("Card with this name " + name + " not found")
         );
     }
 
@@ -37,16 +38,22 @@ public class CardDao {
     public CardEntity getCardByStudent(Student student) {
         StudentEntity students = studentRepository.findByFirstNameAndSurNameAndFamilyNameAndGroup(student.getFirstName(),
                         student.getSurName(), student.getFamilyName(), student.getGroup())
-                .orElseThrow(() -> new RuntimeException("Student not found 24242342424242424"));
+                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
         return cardRepository.findByPokemonOwner_id(students.getId());
     }
 
+    @Transactional
     // Сохранить карту
     public CardEntity saveCard(CardEntity card) {
-        return cardRepository.save(card);
+        return cardRepository.saveAndFlush(card);
     }
 
     public List<CardEntity> findAllCard(){
         return cardRepository.findAll();
     }
+
+    public boolean cardExists(CardEntity card) {
+        return cardRepository.existsByName(card.getName());
+    }
+
 }

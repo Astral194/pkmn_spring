@@ -1,9 +1,11 @@
 package ru.mirea.Pegov.pkmn.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.Pegov.pkmn.dao.CardDao;
+import ru.mirea.Pegov.pkmn.dao.StudentDao;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.models.Card;
@@ -20,11 +22,11 @@ import java.util.UUID;
 public class CardServiceImpl implements CardService {
 
     private final CardDao cardDao;
+    private final StudentDao studentDao;
 
     @Override
-    public Card getCardById(UUID id) {
-        CardEntity cardEntity = cardDao.getCardById(id);
-        return Card.fromEntityCard(cardEntity);
+    public CardEntity getCardById(UUID id) {
+        return cardDao.getCardById(id);
     }
 
     @Override
@@ -35,25 +37,32 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card getCardByName(String name) {
-        return Card.fromEntityCard(cardDao.getCardByName(name));
+    public CardEntity getCardByName(String name) {
+        return cardDao.getCardByName(name);
     }
 
     @Override
     @Transactional
-    public CardEntity saveOrUpdateCard(CardEntity card) {
-        // карта должна иметь владельца или связь с эволюционной картой
-        if (card.getPokemonOwner() == null ||
-                (card.getPokemonStage() == PokemonStage.BASIC && card.getEvolvesFrom() == null)) {
-            throw new RuntimeException("Card must have an owner or evolutionary link");
+    public CardEntity saveCard(CardEntity card) {
+        if (cardDao.cardExists(card)) {
+            throw new IllegalArgumentException("есть такая карточка!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
-
-        // Проверка уникальности карты
-        CardEntity cardEntity = cardDao.getCardByName(card.getName());
-        if (cardEntity.getNumber().equals(card.getNumber()) &&
-                !cardEntity.getId().equals(card.getId())) {
-            card.setId(cardEntity.getId());
-            return null;
+        if(card.getPokemonOwner() != null){
+            if(studentDao.studentExists(card.getPokemonOwner())){
+                card.setPokemonOwner(studentDao.getStudentsByFIO(card.getPokemonOwner()));
+            }
+            else {
+                card.setPokemonOwner(studentDao.saveStudent(card.getPokemonOwner()));
+            }
+        }
+        if(card.getEvolvesFrom() != null)
+        {
+            if(cardDao.cardExists(card.getEvolvesFrom())){
+                card.setEvolvesFrom(cardDao.getCardByName(card.getEvolvesFrom().getName()));
+            }
+            else {
+                card.setEvolvesFrom(cardDao.saveCard(card.getEvolvesFrom()));
+            }
         }
 
         return cardDao.saveCard(card);
@@ -64,4 +73,6 @@ public class CardServiceImpl implements CardService {
     public List<CardEntity> findAllcard(){
         return cardDao.findAllCard();
     }
+
+
 }

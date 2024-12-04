@@ -1,12 +1,13 @@
 package ru.mirea.Pegov.pkmn.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
-import ru.mirea.Pegov.pkmn.models.Student;
 import ru.mirea.Pegov.pkmn.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/students")
@@ -29,7 +30,22 @@ public class UserController {
 
     // 3. JSON с ФИО и возвращает пользователя.
     @GetMapping("/owner")
-    public StudentEntity getUserByFullName(@RequestBody Student student) {
+    public Optional<StudentEntity> getUserByFullName(@RequestBody StudentEntity student) {
         return userService.getStudentByFIO(student);
+    }
+
+    // POST метод для создания пользователя
+    @PostMapping
+    public ResponseEntity<String> createUser(@RequestBody StudentEntity student) {
+
+        Optional<StudentEntity> existingStudent = userService.getStudentByFIO(student);
+
+        if (existingStudent.isPresent()) {
+            return ResponseEntity.badRequest().body("Student with this name already exists.");
+        }
+
+        StudentEntity savedStudent = userService.save(student);
+
+        return ResponseEntity.ok(savedStudent.toString());
     }
 }

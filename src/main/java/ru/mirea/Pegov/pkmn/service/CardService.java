@@ -9,13 +9,13 @@ import java.util.UUID;
 
 public interface CardService {
 
-    Card getCardById(UUID id);
+    CardEntity getCardById(UUID id);
 
     Card getCardByFIO(Student student);
 
-    Card getCardByName(String name);
+    CardEntity getCardByName(String name);
 
-    CardEntity saveOrUpdateCard(CardEntity card);
+    CardEntity saveCard(CardEntity card);
 
     List<CardEntity> findAllcard();
 }

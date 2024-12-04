@@ -34,7 +34,7 @@ public class StudentEntity implements Serializable {
     @Column(name = "family_name")
     private String familyName;
 
-    @Column
+    @Column(name = "\"group\"")
     private String group;
 
     public static StudentEntity fromStudentToEntity(Student entity) {

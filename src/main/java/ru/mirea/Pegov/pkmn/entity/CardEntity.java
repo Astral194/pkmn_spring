@@ -7,11 +7,11 @@ import java.util.UUID;
 
 
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
 import ru.mirea.Pegov.pkmn.models.*;
 import jakarta.persistence.*;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UuidGenerator;
 import ru.mirea.Pegov.pkmn.converters.EnergyTypeConverter;
 
 import static org.hibernate.type.SqlTypes.JSON;
@@ -28,8 +28,7 @@ public class CardEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    @UuidGenerator
+    @Column(name="id")
     private UUID id;
 
     @Column(name="name")
@@ -86,7 +85,7 @@ public class CardEntity implements Serializable {
                 ", retreatCost='" + retreatCost + '\'' +
                 ", gameSet='" + gameSet + '\'' +
                 ", regulationMark=" + regulationMark +
-                ", owner=" + pokemonOwner.toString() +
+                ", owner=" + ((pokemonOwner != null) ? pokemonOwner.toString() : pokemonOwner)+
                 '}';
     }
 }

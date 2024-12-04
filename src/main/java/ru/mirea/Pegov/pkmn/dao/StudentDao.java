@@ -2,9 +2,8 @@ package ru.mirea.Pegov.pkmn.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.mirea.Pegov.pkmn.entity.CardEntity;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
-import ru.mirea.Pegov.pkmn.models.Student;
 import ru.mirea.Pegov.pkmn.repository.StudentEntityRepository;
 
 import java.util.List;
@@ -23,26 +22,32 @@ public class StudentDao {
     }
 
     // Найти студента по имени
-    public StudentEntity getStudentsByFIO(Student student) {
-        return studentRepository.findByFirstNameAndSurNameAndFamilyNameAndGroup(student.getFirstName(), student.getSurName(), student.getFamilyName(), student.getGroup()).orElseThrow(
-                () -> new RuntimeException("No students found\n" + student.toString())
-        );
+    public Optional<StudentEntity> getStudentsByFIOandGroup(StudentEntity student) {
+        return studentRepository.findByFirstNameAndSurNameAndFamilyNameAndGroup(
+                student.getFirstName(),
+                student.getSurName(),
+                student.getFamilyName(),
+                student.getGroup());
+    }
+
+    public boolean studentExists(StudentEntity student) {
+        return studentRepository.existsByFirstNameAndSurNameAndFamilyName(student.getFirstName(),
+                student.getSurName(),
+                student.getFamilyName());
+    }
+
+    public StudentEntity getStudentsByFIO(StudentEntity student) {
+        return studentRepository.findByFirstNameAndSurNameAndFamilyName(student.getFirstName(), student.getSurName(), student.getFamilyName());
     }
 
     // Сохранить студента
     public StudentEntity saveStudent(StudentEntity student) {
-        return studentRepository.save(student);
-    }
-
-    // Удалить студента по ID
-    public void deleteStudent(UUID id) {
-        if (!studentRepository.existsById(id)) {
-            throw new RuntimeException("Student with id " + id + " not found");
-        }
-        studentRepository.deleteById(id);
+        return studentRepository.saveAndFlush(student);
     }
 
     public List<StudentEntity> findAllStudent(){
         return studentRepository.findAll();
     }
+
+
 }
