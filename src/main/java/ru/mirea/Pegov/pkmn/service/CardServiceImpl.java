@@ -9,12 +9,9 @@ import ru.mirea.Pegov.pkmn.dao.StudentDao;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.models.Card;
-import ru.mirea.Pegov.pkmn.models.PokemonStage;
 import ru.mirea.Pegov.pkmn.models.Student;
-import ru.mirea.Pegov.pkmn.repository.CardEntityRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,10 +27,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card getCardByFIO(Student student) {
-        CardEntity cardEntity = cardDao.getCardByStudent(student);
-
-        return Card.fromEntityCard(cardEntity);
+    public CardEntity getCardByFIO(StudentEntity student) {
+        return cardDao.getCardByStudent(student);
     }
 
     @Override
@@ -49,7 +44,7 @@ public class CardServiceImpl implements CardService {
         }
         if(card.getPokemonOwner() != null){
             if(studentDao.studentExists(card.getPokemonOwner())){
-                card.setPokemonOwner(studentDao.getStudentsByFIO(card.getPokemonOwner()));
+                card.setPokemonOwner(studentDao.getStudentsByFIO(card.getPokemonOwner()).getFirst());
             }
             else {
                 card.setPokemonOwner(studentDao.saveStudent(card.getPokemonOwner()));
@@ -70,7 +65,7 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public List<CardEntity> findAllcard(){
+    public List<CardEntity> findAllard(){
         return cardDao.findAllCard();
     }
 

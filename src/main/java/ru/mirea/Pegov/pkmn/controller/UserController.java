@@ -29,7 +29,7 @@ public class UserController {
     }
 
     // 3. JSON с ФИО и возвращает пользователя.
-    @GetMapping("/owner")
+    @GetMapping("")
     public Optional<StudentEntity> getUserByFullName(@RequestBody StudentEntity student) {
         return userService.getStudentByFIO(student);
     }
@@ -37,15 +37,10 @@ public class UserController {
     // POST метод для создания пользователя
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody StudentEntity student) {
-
-        Optional<StudentEntity> existingStudent = userService.getStudentByFIO(student);
-
-        if (existingStudent.isPresent()) {
-            return ResponseEntity.badRequest().body("Student with this name already exists.");
+        if (userService.getStudentByFIO(student).isPresent()) {
+            return ResponseEntity.badRequest().body("Ай ай ай такой студент уже есть!!!!");
         }
 
-        StudentEntity savedStudent = userService.save(student);
-
-        return ResponseEntity.ok(savedStudent.toString());
+        return ResponseEntity.ok(userService.save(student).toString());
     }
 }

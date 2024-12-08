@@ -21,7 +21,7 @@ public class CardController {
     // i. Получить список всех карт
     @GetMapping("")
     public List<CardEntity> getAllCards() {
-        return cardService.findAllcard();
+        return cardService.findAllard();
     }
 
     // ii. Получить карту по имени
@@ -31,7 +31,7 @@ public class CardController {
     }
     // iii. Получить карту по ФИО и группе
     @GetMapping("/owner")
-    public Card getCardByFIO(@RequestBody Student student) {
+    public CardEntity getCardByFIO(@RequestBody StudentEntity student) {
         return cardService.getCardByFIO(student);
     }
 
@@ -47,23 +47,6 @@ public class CardController {
         if (card.getPokemonOwner() == null){
             return ResponseEntity.badRequest().body("Бро у карты должен быть владелец.");
         }
-
-        CardEntity cardEntity = new CardEntity();
-        cardEntity.setId(card.getId());
-        cardEntity.setName(card.getName());
-        cardEntity.setPokemonStage(card.getPokemonStage());
-        cardEntity.setName(card.getName());
-        cardEntity.setHp(card.getHp());
-        cardEntity.setEvolvesFrom(card.getEvolvesFrom());
-        cardEntity.setSkills(card.getSkills());
-        cardEntity.setWeaknessType(card.getWeaknessType());
-        cardEntity.setResistanceType(card.getResistanceType());
-        cardEntity.setRetreatCost(card.getRetreatCost());
-        cardEntity.setGameSet(card.getGameSet());
-        cardEntity.setPokemonType(card.getPokemonType());
-        cardEntity.setRegulationMark(card.getRegulationMark());
-        cardEntity.setPokemonOwner(card.getPokemonOwner());
-
-        return ResponseEntity.ok(cardService.saveCard(cardEntity).toString());
+        return ResponseEntity.ok(cardService.saveCard(card).toString());
     }
 }

@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mirea.Pegov.pkmn.dao.StudentDao;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
-import ru.mirea.Pegov.pkmn.models.Student;
-import ru.mirea.Pegov.pkmn.repository.StudentEntityRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +19,13 @@ public class UserServiceImpl implements UserService  {
         return studentDao.getStudentsByGroup(group);
     }
 
+    @Override
     public Optional<StudentEntity> getStudentByFIO(StudentEntity student) {
-        Optional<StudentEntity> students = Optional.ofNullable(studentDao.getStudentsByFIO(student));
-        if (students.isPresent()) {
-            throw new IllegalArgumentException("More than one user found with the provided full name.");
+        List<StudentEntity> students = studentDao.getStudentsByFIO(student);
+        if (students.size() > 1) {
+            throw new RuntimeException("More than one user found with the provided full name.");
         }
-        return students.isEmpty() ? null : students.stream().findFirst();
+        return students.stream().findFirst();
     }
 
     @Override

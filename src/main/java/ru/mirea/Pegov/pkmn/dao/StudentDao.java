@@ -16,18 +16,8 @@ public class StudentDao {
 
     private final StudentEntityRepository studentRepository;
 
-    // Найти студента по ID или выбросить исключение
     public List<StudentEntity> getStudentsByGroup(String group) {
         return studentRepository.getStudentByGroup(group);
-    }
-
-    // Найти студента по имени
-    public Optional<StudentEntity> getStudentsByFIOandGroup(StudentEntity student) {
-        return studentRepository.findByFirstNameAndSurNameAndFamilyNameAndGroup(
-                student.getFirstName(),
-                student.getSurName(),
-                student.getFamilyName(),
-                student.getGroup());
     }
 
     public boolean studentExists(StudentEntity student) {
@@ -36,7 +26,7 @@ public class StudentDao {
                 student.getFamilyName());
     }
 
-    public StudentEntity getStudentsByFIO(StudentEntity student) {
+    public List<StudentEntity> getStudentsByFIO(StudentEntity student) {
         return studentRepository.findByFirstNameAndSurNameAndFamilyName(student.getFirstName(), student.getSurName(), student.getFamilyName());
     }
 

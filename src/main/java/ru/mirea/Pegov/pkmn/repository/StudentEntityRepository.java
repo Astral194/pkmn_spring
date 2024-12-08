@@ -15,7 +15,7 @@ public interface StudentEntityRepository extends JpaRepository<StudentEntity, UU
 
     Optional<StudentEntity> findByFirstNameAndSurNameAndFamilyNameAndGroup(String firstName, String surName, String familyName, String group);
 
-    StudentEntity findByFirstNameAndSurNameAndFamilyName(String firstName, String surName, String familyName);
+    List<StudentEntity> findByFirstNameAndSurNameAndFamilyName(String firstName, String surName, String familyName);
 
     List<StudentEntity> findAll();
 
