@@ -12,7 +12,7 @@ services:
        POSTGRES_DB: pkmn_db
      networks:
        - pkmn-net
-  pkmn-app:
+  pkmn-app-Pegov:
     image: pkmn-tag
     build: .
     restart: always

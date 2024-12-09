@@ -2,13 +2,10 @@ package ru.mirea.Pegov.pkmn.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.repository.StudentEntityRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
