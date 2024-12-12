@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
+import ru.mirea.Pegov.pkmn.models.Card;
 import ru.mirea.Pegov.pkmn.service.CardService;
 import ru.mirea.Pegov.pkmn.Rest.PokemonTcgService;
 
@@ -46,11 +47,12 @@ public class CardController {
 
     // v создание карты
     @PostMapping
-    public ResponseEntity<String> createCars(@RequestBody CardEntity card) {
+    public ResponseEntity<String> createCars(@RequestBody Card card) {
         if (card.getPokemonOwner() == null){
             return ResponseEntity.badRequest().body("Бро у карты должен быть владелец.");
         }
-        return ResponseEntity.ok(cardService.saveCard(card).toString());
+        CardEntity entity = CardEntity.fromCardToEntity(card);
+        return ResponseEntity.ok(cardService.saveCard(entity).toString());
     }
 
     @GetMapping("/card-image")
