@@ -1,9 +1,6 @@
 package ru.mirea.Pegov.pkmn.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 
 import java.util.List;
@@ -13,6 +10,8 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Card implements Serializable{
     public static final long serialVersionUID = 1L;
     private PokemonStage pokemonStage;

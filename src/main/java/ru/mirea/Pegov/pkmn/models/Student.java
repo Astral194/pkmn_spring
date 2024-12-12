@@ -1,10 +1,7 @@
 package ru.mirea.Pegov.pkmn.models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 
 import java.io.Serializable;
@@ -13,6 +10,8 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Student implements Serializable  {
     public static final long serialVersionUID = 1L;
     private String firstName;
