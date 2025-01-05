@@ -29,7 +29,7 @@ public class UserController {
     }
 
     // 3. JSON с ФИО и возвращает пользователя.
-    @GetMapping("")
+    @GetMapping("/fio")
     public Optional<StudentEntity> getUserByFullName(@RequestBody StudentEntity student) {
         return userService.getStudentByFIO(student);
     }

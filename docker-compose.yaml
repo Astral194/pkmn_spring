@@ -25,24 +25,8 @@ services:
     networks:
       - pkmn-net
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@mymail.ru
-      PGADMIN_DEFAULT_PASSWORD: adminpassword
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - 80:80
-    networks:
-      - pkmn-net
-    restart: unless-stopped
-
 volumes:
   pkmn-database_data:
-  pgadmin:
   pkmn-db-migration:
 networks:
   pkmn-net:
