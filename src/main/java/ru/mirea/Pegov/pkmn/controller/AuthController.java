@@ -7,6 +7,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mirea.Pegov.pkmn.models.LoginRequest;
 import ru.mirea.Pegov.pkmn.security.jwt.JwtService;
 import ru.mirea.Pegov.pkmn.security.service.LoginService;
+import ru.mirea.Pegov.pkmn.security.service.RegistrationService;
 
 import javax.security.auth.login.CredentialException;
 import java.io.IOException;
@@ -30,8 +34,17 @@ public class AuthController {
 
     private final LoginService loginService;
 
+    private final RegistrationService registrationService;
+
+    private final JdbcUserDetailsManager jdbcUserDetailsManager;
+
+    private final PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws CredentialException {
+        if (!jdbcUserDetailsManager.userExists(loginRequest.getUsername())) {
+            registrationService.registerUser(loginRequest);
+        }
         String jwt = loginService.login(loginRequest.getUsername(), loginRequest.getPassword());
         return ResponseEntity.ok(jwt);
     }

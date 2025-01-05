@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.mirea.Pegov.pkmn.entity.UserEntity;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UserDTO implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
-    private Set<GrantedAuthority> authorities;
+    private List<GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
