@@ -27,8 +27,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                 customizer -> customizer
-                        .requestMatchers("/errorr**")
-                        .permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/v1/cards/**",
@@ -43,10 +41,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").authenticated()
                         .anyRequest().authenticated()
         );
-        http.userDetailsService(jdbcUserDetailsManager);
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.userDetailsService(jdbcUserDetailsManager);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

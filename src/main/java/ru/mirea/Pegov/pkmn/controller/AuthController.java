@@ -33,7 +33,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws CredentialException {
         String jwt = loginService.login(loginRequest.getUsername(), loginRequest.getPassword());
-
         return ResponseEntity.ok(jwt);
     }
 
