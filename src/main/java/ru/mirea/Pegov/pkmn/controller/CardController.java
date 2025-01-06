@@ -56,7 +56,7 @@ public class CardController {
     }
 
     @GetMapping("/card-image")
-    public ResponseEntity<Void> getCardImage(@RequestBody CardEntity card) {
+    public ResponseEntity<Void> getCardImage(@RequestBody Card card) {
         try {
             String imageUrl = pokemonTcgService.getCardImageUrl(card.getName(), card.getNumber());
             HttpHeaders headers = new HttpHeaders();
