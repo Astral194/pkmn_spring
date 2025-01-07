@@ -42,7 +42,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").authenticated()
                         .anyRequest().authenticated()
         );
-        http.formLogin(form -> form.successForwardUrl("/auth/success"));
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.userDetailsService(jdbcUserDetailsManager);
