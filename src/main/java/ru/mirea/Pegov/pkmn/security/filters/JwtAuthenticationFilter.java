@@ -29,11 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return path.equals("/auth/login") || path.equals("/login"); // Исключаем эндпоинты
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,12 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String jwtToken = request.getHeader("Authorization");
 
-        log.info("JWT token: {}", jwtToken.split("Bearer ")[1]);
 
         if ((Objects.isNull(jwtToken)) || !jwtToken.startsWith("Bearer ")) {
-            log.info("JWT token: {}", jwtToken);
-            for (Cookie cookie : request.getCookies()) {
-                jwtToken = new String(Base64.getDecoder().decode(cookie.getValue()));
+            if (Objects.isNull(request)) {
+                for (Cookie cookie : request.getCookies()) {
+                    if (cookie.getName().equals("jwt"))
+                        jwtToken = new String(Base64.getDecoder().decode(cookie.getValue()));
+                }
             }
 
             if (Objects.isNull(jwtToken)) {
@@ -56,7 +52,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (jwtToken.startsWith("Bearer ")) {
-            log.info("JWT token: {}", jwtToken);
             jwtToken = jwtToken.split("Bearer ")[1];
             log.info("JWT token: {}", jwtToken);
         }
