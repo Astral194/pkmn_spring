@@ -38,8 +38,6 @@ public class AuthController {
 
     private final JdbcUserDetailsManager jdbcUserDetailsManager;
 
-    private final PasswordEncoder passwordEncoder;
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws CredentialException {
         if (!jdbcUserDetailsManager.userExists(loginRequest.getUsername())) {
@@ -59,6 +57,14 @@ public class AuthController {
         response.addCookie(
                 new Cookie("jwt", Base64.getEncoder().encodeToString(jwt.getBytes(StandardCharsets.UTF_8)))
         );
+
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setMaxAge(0);
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
 
         ClassPathResource resource = new ClassPathResource("success.html");
         String success = new String(Files.readAllBytes(resource.getFile().toPath()));

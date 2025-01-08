@@ -40,14 +40,14 @@ public class SecurityConfiguration {
                         .hasRole("ADMIN")
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/**").authenticated()
+                        .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
         );
+        http.formLogin(form -> form.successForwardUrl("/auth/success"));
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.userDetailsService(jdbcUserDetailsManager);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 }

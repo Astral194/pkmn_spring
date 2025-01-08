@@ -38,10 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         if ((Objects.isNull(jwtToken)) || !jwtToken.startsWith("Bearer ")) {
-            if (Objects.isNull(request)) {
+            if (!Objects.isNull(request.getCookies())) {
                 for (Cookie cookie : request.getCookies()) {
                     if (cookie.getName().equals("jwt"))
                         jwtToken = new String(Base64.getDecoder().decode(cookie.getValue()));
+                    System.out.println(jwtToken);
                 }
             }
 
