@@ -33,14 +33,11 @@ public class JwtService {
     private long TOKEN_EXPIRATION_MINUTE;
 
     public String createJwt(String username, GrantedAuthority authority) {
-
-        System.out.println(authority.getAuthority());
-
         String jwt = JWT.create()
                 .withIssuer("pkmn")
                 .withSubject(username)
                 .withClaim("authority", authority.getAuthority())
-                .withExpiresAt(Date.from(Instant.now().plusSeconds(50000000)))
+                .withExpiresAt(Date.from(Instant.now().plusSeconds(TOKEN_EXPIRATION_MINUTE)))
                 .sign(Algorithm.HMAC256(SECRET_KEY));
         return jwt;
     }
@@ -64,7 +61,6 @@ public class JwtService {
 
             return decodedJWT;
         } catch (JWTVerificationException e){
-            System.out.println("dsdsdsdsdds");
             return null;
         }
     }
