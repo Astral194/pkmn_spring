@@ -23,7 +23,7 @@ public class CardController {
     private final PokemonTcgService pokemonTcgService;
 
     // i. Получить список всех карт
-    @GetMapping("/all")
+    @GetMapping("")
     public List<CardEntity> getAllCards() {
         return cardService.findAllard();
     }
