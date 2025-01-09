@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                                 "/api/v1/cards/**",
                                 "/api/v1/students/**",
                                 "/api/v1/cards/card-image")
-                        .hasAnyRole("ADMIN", "USER")
+                        .permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/v1/cards",
