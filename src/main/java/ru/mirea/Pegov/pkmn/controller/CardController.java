@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.mirea.Pegov.pkmn.entity.CardEntity;
 import ru.mirea.Pegov.pkmn.entity.StudentEntity;
 import ru.mirea.Pegov.pkmn.models.Card;
+import ru.mirea.Pegov.pkmn.models.Student;
 import ru.mirea.Pegov.pkmn.service.CardService;
 import ru.mirea.Pegov.pkmn.Rest.PokemonTcgService;
 
@@ -35,8 +36,8 @@ public class CardController {
 
 
     @GetMapping("/owner")
-    public CardEntity getCardByFIO(@RequestBody StudentEntity student) {
-        return cardService.getCardByFIO(student);
+    public CardEntity getCardByFIO(@RequestBody Student student) {
+        return cardService.getCardByFIO(StudentEntity.fromStudentToEntity(student));
     }
 
 
